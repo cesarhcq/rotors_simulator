@@ -1,16 +1,15 @@
 RotorS
 ===============
 
-Change Log
-===============
+### Change Log ###
 
-[Author] ***Ayush Gaud***  
+[Author: Ayush Gaud]
 
-Parrot Bebop 2 model has been added to the existing models.
+##### Parrot Bebop 2 model added. #####
 
 ![bebop_gazebo](https://cloud.githubusercontent.com/assets/4923897/22562910/824674e2-e9a4-11e6-8232-b4039fc92e35.gif)
 
-####To run the demo execute the following command
+#### To run the demo execute the following command
 
 ```
 $ roslaunch rotors_gazebo bebop_hover.launch
