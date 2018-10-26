@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
   trajectory_msg.header.stamp = ros::Time::now();
 
   // Default desired position and yaw.
-  Eigen::Vector3d desired_position(0.0, 0.0, 1.0);
+  Eigen::Vector3d desired_position(0.0, 0.0, 2.0);
   double desired_yaw = 0.0;
 
   // Overwrite defaults if set as node parameters.
@@ -75,7 +75,22 @@ int main(int argc, char** argv) {
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
+  ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
+           nh.getNamespace().c_str(), desired_position.x(),
+           desired_position.y(), desired_position.z());
+  trajectory_pub.publish(trajectory_msg);
 
+  ros::Time begin = ros::Time::now();
+  while(ros::Time::now()-begin < ros::Duration(5.0)){
+    ROS_INFO("Esperando");
+  }
+
+
+  // Default desired position and yaw.
+  desired_position.y() = 2.0;
+
+  mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
+      desired_position, desired_yaw, &trajectory_msg);
   ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
            nh.getNamespace().c_str(), desired_position.x(),
            desired_position.y(), desired_position.z());
