@@ -17,6 +17,29 @@ using namespace std;
 using namespace cv;
 // using namespace aruco;
 
+// 2.6 cm - 26 mm - 0.026 m
+const float calibrationSquareDimension = 0.025f; //meters
+// 13.2 cm - 132 mm - 0.132 m
+// 33.9 cm - 339 mm - 0.339 m
+const float arucoSquareDimensionMaior = 0.1325f; //meters
+const Size chessboardDimensions = Size(6,9);
+
+void createArucoMarkers()
+{
+    Mat outputMarker;
+
+    Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_1000);
+
+    for(int i = 0; i < 1000 ; i++)
+    {
+      aruco::drawMarker(markerDictionary, i, 400, outputMarker, 1);
+      ostringstream convert;
+      string imageName = "4X4_1000_Marker_";
+      convert << imageName << i << ".jpeg";
+      imwrite(convert.str(), outputMarker);
+    }
+}
+
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
   try
@@ -42,6 +65,9 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
 int main(int argc, char **argv)
 {
+  Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+  Mat distanceCoefficients;
+
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
   cv::namedWindow("ImgGray");
@@ -53,5 +79,7 @@ int main(int argc, char **argv)
   ros::spin();
   cv::destroyWindow("ImgGray");
   cv::destroyWindow("HSV");
+  //createArucoMarkers();
+
 }
 
