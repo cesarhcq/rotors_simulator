@@ -5,6 +5,7 @@
 
 using namespace std;
 using namespace cv;
+// using namespace aruco;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
