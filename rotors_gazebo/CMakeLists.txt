@@ -11,6 +11,7 @@ add_definitions(-std=c++11)
 # (gz sdf ... command needs to be available)
 find_package(gazebo REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(aruco REQUIRED)
 
 if(${gazebo_VERSION_MAJOR} GREATER 2)
     message(STATUS "Building iris.sdf.")

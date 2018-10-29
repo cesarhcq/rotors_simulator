@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
   }
 
   // Wait for 5 seconds to let the Gazebo GUI show up.
-  ros::Duration(5.0).sleep();
+  ros::Duration(3.0).sleep();
 
   trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
   trajectory_msg.header.stamp = ros::Time::now();
@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
 
 
   // Default desired position and yaw.
-  desired_position.y() = 2.0;
+  desired_position.x() = 2.0;
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
