@@ -10,6 +10,7 @@ add_definitions(-std=c++11)
 # We need Gazebo version >= 3.0.0 to generate iris.sdf file
 # (gz sdf ... command needs to be available)
 find_package(gazebo REQUIRED)
+find_package(OpenCV REQUIRED)
 
 if(${gazebo_VERSION_MAJOR} GREATER 2)
     message(STATUS "Building iris.sdf.")
@@ -43,7 +44,15 @@ if(NO_ROS)
   return()
 endif()
 
-find_package(catkin REQUIRED COMPONENTS gazebo_msgs geometry_msgs mav_msgs roscpp sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS 
+  gazebo_msgs 
+  geometry_msgs 
+  mav_msgs 
+  roscpp 
+  sensor_msgs
+  image_transport 
+  cv_bridge
+  )
 
 catkin_package(
   CATKIN_DEPENDS
@@ -52,9 +61,15 @@ catkin_package(
     mav_msgs
     roscpp
     sensor_msgs
+       
 )
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+  include ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCUDE_DIRS}
+  )
+
+
 
 add_executable(waypoint_publisher src/waypoint_publisher.cpp)
 target_link_libraries(waypoint_publisher ${catkin_LIBRARIES})
@@ -67,6 +82,10 @@ add_dependencies(waypoint_publisher_file ${catkin_EXPORTED_TARGETS})
 add_executable(hovering_example src/hovering_example.cpp)
 target_link_libraries(hovering_example ${catkin_LIBRARIES})
 add_dependencies(hovering_example ${catkin_EXPORTED_TARGETS})
+
+add_executable(image_publisher src/image_publisher.cpp)
+target_link_libraries(image_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(image_publisher ${catkin_EXPORTED_TARGETS})
 
 foreach(dir launch models resource worlds)
    install(DIRECTORY ${dir}/
