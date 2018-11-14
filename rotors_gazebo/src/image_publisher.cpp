@@ -17,11 +17,7 @@ using namespace std;
 using namespace cv;
 // using namespace aruco;
 
-// 2.6 cm - 26 mm - 0.026 m
-const float calibrationSquareDimension = 0.025f; //meters
-// 13.2 cm - 132 mm - 0.132 m
-// 33.9 cm - 339 mm - 0.339 m
-const float arucoSquareDimensionMaior = 0.1325f; //meters
+const float arucoSquareDimension = 1.00f;
 const Size chessboardDimensions = Size(6,9);
 
 void createArucoMarkers()
@@ -47,11 +43,40 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     Mat src = cv_bridge::toCvShare(msg, "bgr8")->image;
     Mat src_gray, edges, HSV;
 
+    Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+    Mat distanceCoefficients;
+    vector<int> markerIds;
+    vector<vector<Point2f > > markerCorners, rejectedCandidates;
+
+    aruco::DetectorParameters parameters;
+
+    Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_1000);
+
+    vector<Vec3d> rotationVectors, translationVectors;
+
+    aruco::detectMarkers(src, markerDictionary, markerCorners, markerIds);
+    //aruco::estimatePoseSingleMarkers(markerCorners, arucoSquareDimension, cameraMatrix, distanceCoefficients, rotationVectors, translationVectors);
+
+    for (int i = 0; i < markerIds.size(); i++)
+    {
+      //if (markerIds[i] == 269)
+      //{
+        //cout << " marcador: " << markerIds[i] << endl;
+        aruco::drawDetectedMarkers(src, markerCorners, markerIds);
+        //aruco::drawAxis(src, cameraMatrix, distanceCoefficients, rotationVectors[i], translationVectors[i], 0.1f);
+        //cout << " translation [" << markerIds[i] << "] = " << translationVectors[i] << " ; rotation:" << rotationVectors[i] << endl;
+      //}
+
+    }
+
+    
+
     //cvtColor(src, src_gray, CV_RGB2GRAY);
     cvtColor(src, HSV, COLOR_BGR2HSV);
 
     Canny(HSV, edges, 50, 200, 3);
 
+    cv::imshow("Aruco", src);
     cv::imshow("HSV", HSV);
     cv::imshow("ImgGray", edges);
     cv::waitKey(30);
@@ -65,8 +90,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
 int main(int argc, char **argv)
 {
-  Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
-  Mat distanceCoefficients;
+  
 
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
@@ -79,6 +103,7 @@ int main(int argc, char **argv)
   ros::spin();
   cv::destroyWindow("ImgGray");
   cv::destroyWindow("HSV");
+  cv::destroyWindow("Aruco");
   //createArucoMarkers();
 
 }
