@@ -40,6 +40,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
   try
   {
+  	//criando matrizes de imagem
     Mat src = cv_bridge::toCvShare(msg, "bgr8")->image;
     Mat src_gray, edges, HSV;
 
@@ -48,8 +49,9 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     vector<int> markerIds;
     vector<vector<Point2f > > markerCorners, rejectedCandidates;
 
+    //detector arudo parametros
     aruco::DetectorParameters parameters;
-
+    //chamando dicionario
     Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_1000);
 
     vector<Vec3d> rotationVectors, translationVectors;
@@ -77,7 +79,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     Canny(HSV, edges, 50, 200, 3);
 
     cv::imshow("Aruco", src);
-    cv::imshow("HSV", HSV);
+    //cv::imshow("HSV", HSV);
     cv::imshow("ImgGray", edges);
     cv::waitKey(30);
 
@@ -102,7 +104,7 @@ int main(int argc, char **argv)
 
   ros::spin();
   cv::destroyWindow("ImgGray");
-  cv::destroyWindow("HSV");
+  //cv::destroyWindow("HSV");
   cv::destroyWindow("Aruco");
   //createArucoMarkers();
 
