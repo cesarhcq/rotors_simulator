@@ -21,7 +21,7 @@ $ roslaunch rotors_gazebo bebop_hover2.launch
 $ rosrun rotors_gazebo image_publisher
 ```
 
-If you do not have ROS Workspace, you need to create:
+If you do not have ROS Workspace, you need to create.
 Please, note: you can create any name to your workspace.
 
 ```
