@@ -13,33 +13,15 @@ ROS version: Kinetic
 
 In order to perform a outdoor navigation based on image processing and aruco detection to take-off and land. Firstly, we used a Parrot Bebop 2 model as drone to navigate around the environment. The main idea is to use the Aruco Tag to send commands to bebop 2 to take-off and land autonomously.
 
+We use the kinetic installation from: http://wiki.ros.org/kinetic/Installation. Do not forget to install wstool http://wiki.ros.org/wstool
+
+
 #### To run the experimental test, following the command
 
 ```
 $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
-```
-
-If you do not have ROS Workspace, you need to create.
-Please, note: you can create any name to your workspace.
-
-```
- $ mkdir -p ~/catkin_ws/src
- $ cd ~/catkin_ws/src
- $ catkin_init_workspace  # initialize your catkin workspace
- $ wstool init
- $ cd ~/catkin_ws/src
- $ git clone https://github.com/cesarhcq/rotors_simulator.git
- $ cd ~/catkin_ws/
- $ catkin build
-```
-
-You can add sourcing to your `.bashrc` file:
-
-```
- $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
- $ source ~/.bashrc
 ```
 
 RotorS
