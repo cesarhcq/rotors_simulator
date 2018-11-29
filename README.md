@@ -15,10 +15,23 @@ In order to perform a outdoor navigation based on image processing and aruco det
 
 We use the kinetic installation from: http://wiki.ros.org/kinetic/Installation. Do not forget to install wstool http://wiki.ros.org/wstool
 
+Source installation: https://github.com/mavlink/mavros/blob/master/mavros/README.md#installation
+
+```
+$ sudo apt install ros-kinetic-opencv3
+
+$ sudo apt install ros-kinetic-aruco-ros
+```
 
 #### To run the experimental test, following the command
 
 ```
+$ cd ~/catkin_ws
+
+$ catkin build
+
+$ source devel/setup.bash
+
 $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
