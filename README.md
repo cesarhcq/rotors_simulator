@@ -1,4 +1,4 @@
-Autonomous Take-off and Land - ARuCO
+Autonomous Take-off and Land - ArUco
 ====================================
 
 ### Change Log ###
