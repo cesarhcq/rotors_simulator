@@ -21,6 +21,8 @@ Source installation: https://github.com/mavlink/mavros/blob/master/mavros/README
 $ sudo apt install ros-kinetic-opencv3
 
 $ sudo apt install ros-kinetic-aruco-ros
+
+$ sudo apt install ros-kinetic-cv-bridge
 ```
 
 #### To run the experimental test, following the command
