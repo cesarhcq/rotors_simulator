@@ -5,8 +5,6 @@ set(CMAKE_CXX_STANDARD 11) # C++11...
 set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
 set(CMAKE_CXX_EXTENSIONS ON) #...with compiler extensions like gnu++11
 
-#include(cmake/findDependencies.cmake)
-
 add_definitions(-std=c++11)
 
 #--------------------------#
