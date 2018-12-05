@@ -57,6 +57,8 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   image_transport 
   cv_bridge
+  rospy
+  std_msgs
   )
 
 catkin_package(
