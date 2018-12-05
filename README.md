@@ -38,6 +38,15 @@ $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
 ```
+#### To get the data of calibration of camera
+
+```
+cameraMatrix.txt
+
+cameraDistortion.txt
+```
+
+http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
 
 RotorS
 ===============
