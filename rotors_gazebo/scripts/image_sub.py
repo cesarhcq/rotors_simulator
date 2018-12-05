@@ -116,7 +116,7 @@ class image_converter:
 
     #-- 180 deg rotation matrix around x axis
     R_flip = np.zeros((3,3), dtype=np.float)
-    R_flip[0,0] = 1.0
+    R_flip[0,0] = +1.0
     R_flip[1,1] = -1.0
     R_flip[2,2] = -1.0
 
@@ -131,7 +131,7 @@ class image_converter:
     #-- Convert in gray scale\n",
     gray = cv2.cvtColor(src_image, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
 
-    #(rows,cols,channels) = src_image.shape
+    (rows,cols,channels) = src_image.shape
     #if cols > 60 and rows > 60 :
       #cv2.circle(src_image, (50,50), 10, 255)
   
@@ -156,7 +156,7 @@ class image_converter:
 
       #-- Draw the detected marker and put a reference frame over it\n",
       aruco.drawDetectedMarkers(src_image, corners)
-      aruco.drawAxis(src_image, camera_matrix, camera_distortion, rvec, tvec, 40)
+      aruco.drawAxis(src_image, camera_matrix, camera_distortion, rvec, tvec, 30)
 
       #-- Obtain the rotation matrix tag->camera
       R_ct = np.matrix(cv2.Rodrigues(rvec)[0])
@@ -169,15 +169,31 @@ class image_converter:
       pos_camera = -R_tc*np.matrix(tvec).T
       roll_camera, pitch_camera, yaw_camera = rotationMatrixToEulerAngles(R_flip*R_tc)
 
+      #-- Print 'X' in the center of the camera
+      cv2.putText(src_image, "X", (cols/2, rows/2), font, 1, (0, 0, 255), 2, cv2.LINE_AA)
+      ###############################################################################
 
       #-- Print the tag position in camera frame
       str_position = "MARKER Position x=%4.0f  y=%4.0f  z=%4.0f "%(tvec[0], tvec[1], tvec[2])
-      cv2.putText(src_image, str_position, (0, 50), font, 1, (255, 255, 0), 1, cv2.LINE_AA)
+      cv2.putText(src_image, str_position, (0, 20), font, 1, (255, 255, 0), 1, cv2.LINE_AA)
       
       #-- Print the marker's attitude respect to camera frame
       str_attitude = "MARKER Attitude r=%4.0f  p=%4.0f  y=%4.0f"%(math.degrees(roll_marker),
         math.degrees(pitch_marker), math.degrees(yaw_marker))
-      cv2.putText(src_image, str_attitude, (0, 100), font, 1, (255, 255, 0), 1, cv2.LINE_AA)
+      cv2.putText(src_image, str_attitude, (0, 40), font, 1, (255, 255, 0), 1, cv2.LINE_AA)
+
+      ###############################################################################
+
+      #-- Print the tag position in camera frame
+      str_position = "CAMERA Position x=%4.0f  y=%4.0f  z=%4.0f"%(pos_camera[0], pos_camera[1], pos_camera[2])
+      cv2.putText(src_image, str_position, (0, 70), font, 1, (255, 255, 255), 1, cv2.LINE_AA)
+
+      #-- Get the attitude of the camera respect to the frame
+      str_attitude = "CAMERA Attitude r=%4.0f  p=%4.0f  y=%4.0f"%(math.degrees(roll_camera),math.degrees(pitch_camera),
+                          math.degrees(yaw_camera))
+      cv2.putText(src_image, str_attitude, (0, 90), font, 1, (255, 255, 255), 1, cv2.LINE_AA)
+
+      ###############################################################################
       
       cv2.imshow("Image-Aruco", src_image)
       #cv2.imshow("Image-Gray", gray)

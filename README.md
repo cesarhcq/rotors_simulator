@@ -38,6 +38,7 @@ $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
 ```
+
 #### To get the data of calibration of camera
 
 ```
@@ -47,6 +48,27 @@ cameraDistortion.txt
 ```
 
 http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
+
+
+#### You can add sourcing to your `.bashrc` file:
+
+```
+ $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+ $ source ~/.bashrc
+```
+
+#### To change the camera parameters (width and height), you need to modify the bebop2.xacro:
+
+```
+ $ cd ~/rotors_simulator/rotors_description/urdf
+ $ subl bebop2.xacro
+```
+
+#### In order to know camera_info, run this command:
+
+```
+ $ rostopic echo /bebop2/camera_base/camera_info
+```
 
 RotorS
 ===============
