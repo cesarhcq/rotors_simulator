@@ -42,19 +42,19 @@ $ rosrun rotors_gazebo image_publisher
 #### To get the data of calibration of camera
 
 ```
-cameraMatrix.txt
+$ subl ~/catkin_ws/src/rotors_simulator/cameraMatrix.txt
 
-cameraDistortion.txt
+$ subl ~/catkin_ws/src/rotors_simulator/cameraDistortion.txt
 ```
 
-http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
+Link: http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
 
 
 #### You can add sourcing to your `.bashrc` file:
 
 ```
- $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
- $ source ~/.bashrc
+$ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+$ source ~/.bashrc
 ```
 
 #### To change the camera parameters (width and height), you need to modify the bebop2.xacro:
