@@ -55,18 +55,6 @@ def rotationMatrixToEulerAngles(R):
 
     return np.array([x, y, z])
 
-def update_fps_read():
-    global t_read, fps_read
-    t           = time.time()
-    fps_read    = 1.0/(t - t_read)
-    t_read      = t
-    
-def update_fps_detect():
-    global t_detect, fps_detect
-    t           = time.time()
-    fps_detect  = 1.0/(t - t_detect)
-    t_detect      = t
-
 ###############################################################################
 
 #-- Update fps
@@ -92,7 +80,7 @@ fps_detect  = 0.0
 class image_converter:
  
   def __init__(self):
-    #self.image_pub = rospy.Publisher("image_topic_2",Image)
+    self.image_pub = rospy.Publisher("bebop2/camera_base/image_aruco",Image, queue_size=10)
   
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("bebop2/camera_base/image_raw",Image,self.callback)
@@ -103,7 +91,7 @@ class image_converter:
 
     #-- Define Tag\n",
     id_to_find = 1
-    marker_size = 40 #-cm
+    marker_size = 70 #-cm
 
     #-- Define the Aruco dictionary\n",
     aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
@@ -203,11 +191,12 @@ class image_converter:
       print('Nothing detected')
       #-- Display the resulting frame\n",
       cv2.imshow("Image-Aruco",src_image)
+      cv2.waitKey(3)
 
-    #try:
-    #  self.image_pub.publish(self.bridge.cv2_to_imgmsg(src_image, "bgr8"))
-    #except CvBridgeError as e:
-    #  print(e)
+    try:
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(src_image, "bgr8"))
+    except CvBridgeError as e:
+      print(e)
 
 ###############################################################################
 
