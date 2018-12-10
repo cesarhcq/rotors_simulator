@@ -1,4 +1,4 @@
-Autonomous Take-off and Land - ARuCO
+Autonomous Take-off and Land - ArUco
 ====================================
 
 ### Change Log ###
@@ -13,33 +13,61 @@ ROS version: Kinetic
 
 In order to perform a outdoor navigation based on image processing and aruco detection to take-off and land. Firstly, we used a Parrot Bebop 2 model as drone to navigate around the environment. The main idea is to use the Aruco Tag to send commands to bebop 2 to take-off and land autonomously.
 
+We use the kinetic installation from: http://wiki.ros.org/kinetic/Installation. Do not forget to install wstool http://wiki.ros.org/wstool
+
+Source installation: https://github.com/mavlink/mavros/blob/master/mavros/README.md#installation
+
+```
+$ sudo apt install ros-kinetic-opencv3
+
+$ sudo apt install ros-kinetic-aruco-ros
+
+$ sudo apt install ros-kinetic-cv-bridge
+```
+
 #### To run the experimental test, following the command
 
 ```
+$ cd ~/catkin_ws
+
+$ catkin build
+
+$ source devel/setup.bash
+
 $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
 ```
 
-If you do not have ROS Workspace, you need to create.
-Please, note: you can create any name to your workspace.
+#### To get the data of calibration of camera
 
 ```
- $ mkdir -p ~/catkin_ws/src
- $ cd ~/catkin_ws/src
- $ catkin_init_workspace  # initialize your catkin workspace
- $ wstool init
- $ cd ~/catkin_ws/src
- $ git clone https://github.com/cesarhcq/rotors_simulator.git
- $ cd ~/catkin_ws/
- $ catkin build
+$ subl ~/catkin_ws/src/rotors_simulator/cameraMatrix.txt
+
+$ subl ~/catkin_ws/src/rotors_simulator/cameraDistortion.txt
 ```
 
-You can add sourcing to your `.bashrc` file:
+Link: http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
+
+
+#### You can add sourcing to your `.bashrc` file:
 
 ```
- $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
- $ source ~/.bashrc
+$ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+$ source ~/.bashrc
+```
+
+#### To change the camera parameters (width and height), you need to modify the bebop2.xacro:
+
+```
+ $ cd ~/rotors_simulator/rotors_description/urdf
+ $ subl bebop2.xacro
+```
+
+#### In order to know camera_info, run this command:
+
+```
+ $ rostopic echo /bebop2/camera_base/camera_info
 ```
 
 To change the camera parameters (width and height), you need to modify the bebop2.xacro:

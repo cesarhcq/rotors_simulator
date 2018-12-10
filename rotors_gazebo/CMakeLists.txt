@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(rotors_gazebo)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11) # C++11...
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
+set(CMAKE_CXX_EXTENSIONS ON) #...with compiler extensions like gnu++11
 
 add_definitions(-std=c++11)
 
@@ -53,6 +57,8 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   image_transport 
   cv_bridge
+  rospy
+  std_msgs
   )
 
 catkin_package(
