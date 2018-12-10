@@ -15,6 +15,7 @@ import cv2.aruco as aruco
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+from geometry_msgs.msg import Twist
 
 ###############################################################################
 #------- ROTATIONS https://www.learnopencv.com/rotation-matrix-to-euler-angles/
@@ -80,7 +81,10 @@ fps_detect  = 0.0
 class image_converter:
  
   def __init__(self):
-    self.image_pub = rospy.Publisher("bebop2/camera_base/image_aruco",Image, queue_size=10)
+    #self.image_pub = rospy.Publisher("bebop2/camera_base/image_aruco",Image, queue_size=10)
+
+    #-- Create a topic "aruco_results"
+    self.pose_pub = rospy.Publisher("bebop2/camera_base/aruco_results",Twist, queue_size=10)    
   
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("bebop2/camera_base/image_raw",Image,self.callback)
@@ -185,25 +189,40 @@ class image_converter:
       
       cv2.imshow("Image-Aruco", src_image)
       #cv2.imshow("Image-Gray", gray)
-      cv2.waitKey(3)
+      cv2.waitKey(2)
+
+      twist = Twist()
+      twist.linear.x = pos_camera[0]
+      twist.linear.y = pos_camera[1]
+      twist.linear.z = pos_camera[2]
+
+      twist.angular.x = math.degrees(roll_camera)
+      twist.angular.y = math.degrees(pitch_camera)
+      twist.angular.z = math.degrees(yaw_camera)
 
     else:
       print('Nothing detected')
       #-- Display the resulting frame\n",
       cv2.imshow("Image-Aruco",src_image)
-      cv2.waitKey(3)
+      cv2.waitKey(2)
+
+    # try:
+    #   self.image_pub.publish(self.bridge.cv2_to_imgmsg(src_image, "bgr8"))
+    # except CvBridgeError as e:
+    #   print(e)
 
     try:
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(src_image, "bgr8"))
-    except CvBridgeError as e:
-      print(e)
+      self.pose_pub.publish(twist)
+    except:
+      print('erro twist!')
 
 ###############################################################################
 
 def main(args):
 
   ic = image_converter()
-  rospy.init_node('image_converter', anonymous=True)
+  #-- Name of node
+  rospy.init_node('aruco_data', anonymous=True)
 
   try:
     rospy.spin()
