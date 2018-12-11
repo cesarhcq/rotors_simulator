@@ -201,7 +201,7 @@ class image_converter:
       twist.angular.z = math.degrees(yaw_camera)
 
     else:
-      print('Nothing detected')
+      print('Aruco not detected!')
       #-- Display the resulting frame\n",
       cv2.imshow("Image-Aruco",src_image)
       cv2.waitKey(2)
@@ -214,7 +214,7 @@ class image_converter:
     try:
       self.pose_pub.publish(twist)
     except:
-      print('erro twist!')
+      print('Can not find aruco marker!')
 
 ###############################################################################
 
