@@ -75,9 +75,11 @@ int main(int argc, char** argv) {
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
+
   ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
            nh.getNamespace().c_str(), desired_position.x(),
            desired_position.y(), desired_position.z());
+
   trajectory_pub.publish(trajectory_msg);
 
   ros::Time begin = ros::Time::now();
