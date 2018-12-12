@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
   trajectory_msg.header.stamp = ros::Time::now();
 
   // Default desired position and yaw.
-  Eigen::Vector3d desired_position(0.0, 0.0, 2.0);
+  Eigen::Vector3d desired_position(0.0, 0.0, 5.0);
   double desired_yaw = 0.0;
 
   // Overwrite defaults if set as node parameters.
@@ -88,6 +88,7 @@ int main(int argc, char** argv) {
 
   // Default desired position and yaw.
   desired_position.x() = 2.0;
+  desired_yaw = -45*(3.14159265359/180);
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
