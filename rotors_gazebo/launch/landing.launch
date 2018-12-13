@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="mav_name" default="bebop2"/>
+
+  <group ns="$(arg mav_name)">
+    <node name="landing_trajectory" pkg="rotors_gazebo" type="landing_trajectory" output="screen"/>
+  </group>
+</launch>
