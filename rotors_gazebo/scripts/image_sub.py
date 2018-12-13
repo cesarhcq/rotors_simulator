@@ -78,14 +78,15 @@ fps_detect  = 0.0
     
 ###############################################################################
  
-class image_converter:
+class aruco_data:
  
   def __init__(self):
     #self.image_pub = rospy.Publisher("bebop2/camera_base/image_aruco",Image, queue_size=10)
 
-    #-- Create a topic "aruco_results"
+    #-- Create a publisher to topic "aruco_results"
     self.pose_pub = rospy.Publisher("bebop2/camera_base/aruco_results",Twist, queue_size=10)    
-  
+    
+    #-- Create a supscriber from topic "image_raw"
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("bebop2/camera_base/image_raw",Image,self.callback)
 
@@ -220,7 +221,7 @@ class image_converter:
 
 def main(args):
 
-  ic = image_converter()
+  ic = aruco_data()
   #-- Name of node
   rospy.init_node('aruco_data', anonymous=True)
 

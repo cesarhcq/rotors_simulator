@@ -90,9 +90,9 @@ add_executable(hovering_example src/hovering_example.cpp)
 target_link_libraries(hovering_example ${catkin_LIBRARIES})
 add_dependencies(hovering_example ${catkin_EXPORTED_TARGETS})
 
-add_executable(image_publisher src/image_publisher.cpp)
-target_link_libraries(image_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-add_dependencies(image_publisher ${catkin_EXPORTED_TARGETS})
+#add_executable(image_publisher src/image_publisher.cpp)
+#target_link_libraries(image_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#add_dependencies(image_publisher ${catkin_EXPORTED_TARGETS})
 
 foreach(dir launch models resource worlds)
    install(DIRECTORY ${dir}/

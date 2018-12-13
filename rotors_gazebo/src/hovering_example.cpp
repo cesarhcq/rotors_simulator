@@ -28,9 +28,12 @@
 #include <std_srvs/Empty.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
 
+
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "hovering_example");
+
+  ros::init(argc, argv, "hover_landing");
   ros::NodeHandle nh;
+
   // Create a private node handle for accessing node parameters.
   ros::NodeHandle nh_private("~");
   ros::Publisher trajectory_pub =
