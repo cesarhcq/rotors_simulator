@@ -94,6 +94,10 @@ add_dependencies(hovering_example ${catkin_EXPORTED_TARGETS})
 #target_link_libraries(image_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #add_dependencies(image_publisher ${catkin_EXPORTED_TARGETS})
 
+add_executable(landing_trajectory src/landing_trajectory.cpp)
+target_link_libraries(landing_trajectory ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(landing_trajectory ${catkin_EXPORTED_TARGETS})
+
 foreach(dir launch models resource worlds)
    install(DIRECTORY ${dir}/
       DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})

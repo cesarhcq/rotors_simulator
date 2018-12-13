@@ -28,6 +28,10 @@
 #include <std_srvs/Empty.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
 
+<<<<<<< HEAD
+=======
+const float DEG_2_RAD = 3.14159265359 / 180.0;
+>>>>>>> cesar_working
 
 int main(int argc, char** argv) {
 
@@ -60,8 +64,8 @@ int main(int argc, char** argv) {
     ROS_INFO("Unpaused the Gazebo simulation.");
   }
 
-  // Wait for 5 seconds to let the Gazebo GUI show up.
-  ros::Duration(3.0).sleep();
+  // Wait for 10 seconds to let the Gazebo GUI show up.
+  ros::Duration(10.0).sleep();
 
   trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
   trajectory_msg.header.stamp = ros::Time::now();
@@ -78,20 +82,23 @@ int main(int argc, char** argv) {
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
+
   ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
            nh.getNamespace().c_str(), desired_position.x(),
            desired_position.y(), desired_position.z());
+
   trajectory_pub.publish(trajectory_msg);
 
+  // Wait for 3.0 seconds to let
   ros::Time begin = ros::Time::now();
-  while(ros::Time::now()-begin < ros::Duration(5.0)){
+  while(ros::Time::now()-begin < ros::Duration(3.0)){
     ROS_INFO("Esperando");
   }
 
 
   // Default desired position and yaw.
   desired_position.x() = 2.0;
-  desired_yaw = -45*(3.14159265359/180);
+  desired_yaw = -45 * DEG_2_RAD;
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
