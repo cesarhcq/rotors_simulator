@@ -211,6 +211,7 @@ class aruco_data:
     # except CvBridgeError as e:
     #   print(e)
 
+    #-- Publish the pose of marker of aruco to topics
     try:
       self.pose_pub.publish(twist)
     except:

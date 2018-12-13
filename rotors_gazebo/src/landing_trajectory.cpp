@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   trajectory_msg.header.stamp = ros::Time::now();
 
   Eigen::Vector3d desired_position(0.0, 0.0, 6.0);
-  double desired_yaw = 90 * DEG_2_RAD;
+  double desired_yaw = 0 * DEG_2_RAD;
 
   ROS_INFO("Publishing waypoint: [%f, %f, %f].", desired_position.x(), desired_position.y(), desired_position.z());
 
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     msg.angular.y = angY;
     msg.angular.z = angZ;
 
-    ROS_INFO("x: [%lf] y: [%lf] z: [%lf] - angX: [%lf] angY: [%lf] angZ: [%lf]", linx, liny, linz, angX, angY, angZ);
+    //ROS_INFO("x: [%lf] y: [%lf] z: [%lf] - angX: [%lf] angY: [%lf] angZ: [%lf]", linx, liny, linz, angX, angY, angZ);
 
     // if (angZ != NULL){
     //     //ROS_INFO_STREAM("Subscriber position:"<<" linear="<<linx<<" angular="<<angZ);

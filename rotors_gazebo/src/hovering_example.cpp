@@ -28,6 +28,8 @@
 #include <std_srvs/Empty.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
 
+const float DEG_2_RAD = 3.14159265359 / 180.0;
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "hovering_example");
   ros::NodeHandle nh;
@@ -57,8 +59,8 @@ int main(int argc, char** argv) {
     ROS_INFO("Unpaused the Gazebo simulation.");
   }
 
-  // Wait for 5 seconds to let the Gazebo GUI show up.
-  ros::Duration(3.0).sleep();
+  // Wait for 10 seconds to let the Gazebo GUI show up.
+  ros::Duration(10.0).sleep();
 
   trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
   trajectory_msg.header.stamp = ros::Time::now();
@@ -82,15 +84,16 @@ int main(int argc, char** argv) {
 
   trajectory_pub.publish(trajectory_msg);
 
+  // Wait for 3.0 seconds to let
   ros::Time begin = ros::Time::now();
-  while(ros::Time::now()-begin < ros::Duration(5.0)){
+  while(ros::Time::now()-begin < ros::Duration(3.0)){
     ROS_INFO("Esperando");
   }
 
 
   // Default desired position and yaw.
   desired_position.x() = 2.0;
-  desired_yaw = -45*(3.14159265359/180);
+  desired_yaw = -45 * DEG_2_RAD;
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
       desired_position, desired_yaw, &trajectory_msg);
