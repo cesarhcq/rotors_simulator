@@ -143,7 +143,7 @@
       camera_suffix="base"
       frame_rate="30.0"
       horizontal_fov="1.7"
-      image_width="856"
+      image_width="640"
       image_height="480"
       image_format="R8G8B8"
       min_distance="0.02"
