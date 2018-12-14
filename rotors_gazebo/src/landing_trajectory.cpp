@@ -13,6 +13,9 @@
 #include <geometry_msgs/Twist.h>
 
 float linx, liny, linz, angX, angY, angZ;
+float eyawp = 0;
+bool teste = true;
+
 const float DEG_2_RAD = 3.14159265359 / 180.0;
 
 void subscriber_Callback(const geometry_msgs::Twist& msg)
@@ -28,6 +31,26 @@ void subscriber_Callback(const geometry_msgs::Twist& msg)
   angZ = msg.angular.z;
 }
 
+float landing_pose(float erro_eyaw)
+{
+//-- rotation ori z
+float k = 0.04;
+float ki = 0.01;
+float eyaw = erro_eyaw;
+double desired_yaw = erro_eyaw;
+
+  if (abs(eyaw)>1){
+    desired_yaw = k*eyaw+(eyaw+eyawp)*ki;
+    eyawp = eyaw;
+    //ROS_INFO("eyaw = %lf",erro_eyaw);
+    //print('rotação z')
+    return desired_yaw;
+  }
+  else{
+    return desired_yaw;
+  }
+}
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "landing_trajectory");
   ros::NodeHandle nh;
@@ -41,7 +64,10 @@ int main(int argc, char** argv) {
   ros::Subscriber sub = nh.subscribe("/bebop2/camera_base/aruco_results", 10, subscriber_Callback);
 
   //-- Rate
-  ros::Rate rate(10.0);
+  ros::Rate rate(1.0);
+
+  //-- geometry mensages
+  geometry_msgs::Twist msg;
 
   ROS_INFO("Started landing.");
 
@@ -52,17 +78,27 @@ int main(int argc, char** argv) {
   trajectory_msg.header.stamp = ros::Time::now();
 
   Eigen::Vector3d desired_position(0.0, 0.0, 6.0);
-  double desired_yaw = 90 * DEG_2_RAD;
+  double desired_yaw = 0 * DEG_2_RAD;
 
   ROS_INFO("Publishing waypoint: [%f, %f, %f].", desired_position.x(), desired_position.y(), desired_position.z());
 
   mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(desired_position, desired_yaw, &trajectory_msg);
 
-  while(ros::ok()){
-    
-    trajectory_pub.publish(trajectory_msg);
+  trajectory_pub.publish(trajectory_msg);
 
-    geometry_msgs::Twist msg;
+  ROS_INFO("angZ = %lf",angZ);
+
+  //Default desired position and yaw.
+  desired_yaw = angZ * DEG_2_RAD;
+
+  mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
+      desired_position, desired_yaw, &trajectory_msg);
+  ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
+           nh.getNamespace().c_str(), desired_position.x(),
+           desired_position.y(), desired_position.z());
+  //trajectory_pub.publish(trajectory_msg);
+
+  while(ros::ok()){
 
     msg.linear.x = linx;
     msg.linear.y = liny;
@@ -71,8 +107,25 @@ int main(int argc, char** argv) {
     msg.angular.x = angX;
     msg.angular.y = angY;
     msg.angular.z = angZ;
+    if(teste && angZ!=0){
+      // Default desired position and yaw.
+      ROS_INFO("angZ = %lf",angZ);
 
-    ROS_INFO("x: [%lf] y: [%lf] z: [%lf] - angX: [%lf] angY: [%lf] angZ: [%lf]", linx, liny, linz, angX, angY, angZ);
+      //desired_yaw = landing_pose(angZ);
+      //ROS_INFO("desired_yaw = %lf",desired_yaw);
+
+      desired_yaw = angZ;
+      ROS_INFO("correct_yaw = %lf",desired_yaw);
+      desired_yaw = desired_yaw * DEG_2_RAD;
+
+      mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
+        desired_position, desired_yaw, &trajectory_msg);
+
+      trajectory_pub.publish(trajectory_msg);
+      teste = false;
+    }
+
+    //ROS_INFO("x: [%lf] y: [%lf] z: [%lf] - angX: [%lf] angY: [%lf] angZ: [%lf]", linx, liny, linz, angX, angY, angZ);
 
     // if (angZ != NULL){
     //     //ROS_INFO_STREAM("Subscriber position:"<<" linear="<<linx<<" angular="<<angZ);
@@ -83,6 +136,8 @@ int main(int argc, char** argv) {
     //  }else{
     //     ROS_INFO("Erro!");
     //  }
+
+
     rate.sleep();
     ros::spinOnce();
   }

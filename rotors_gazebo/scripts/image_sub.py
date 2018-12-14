@@ -78,14 +78,15 @@ fps_detect  = 0.0
     
 ###############################################################################
  
-class image_converter:
+class aruco_data:
  
   def __init__(self):
     #self.image_pub = rospy.Publisher("bebop2/camera_base/image_aruco",Image, queue_size=10)
 
-    #-- Create a topic "aruco_results"
+    #-- Create a publisher to topic "aruco_results"
     self.pose_pub = rospy.Publisher("bebop2/camera_base/aruco_results",Twist, queue_size=10)    
-  
+    
+    #-- Create a supscriber from topic "image_raw"
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("bebop2/camera_base/image_raw",Image,self.callback)
 
@@ -102,7 +103,7 @@ class image_converter:
     parameters =  aruco.DetectorParameters_create()
 
     #-- Get the camera calibration\n",
-    calib_path = '/home/cesar/bebop_aruco_ws/src/rotors_simulator/'
+    calib_path = '/home/alantavares/aruco_landing_ws/src/rotors_simulator/'
     camera_matrix = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter = ',')
     camera_distortion = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter = ',')
 
@@ -211,6 +212,7 @@ class image_converter:
     # except CvBridgeError as e:
     #   print(e)
 
+    #-- Publish the pose of marker of aruco to topics
     try:
       self.pose_pub.publish(twist)
     except:
@@ -220,7 +222,7 @@ class image_converter:
 
 def main(args):
 
-  ic = image_converter()
+  ic = aruco_data()
   #-- Name of node
   rospy.init_node('aruco_data', anonymous=True)
 

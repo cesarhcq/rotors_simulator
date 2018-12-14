@@ -37,6 +37,8 @@ $ source devel/setup.bash
 $ roslaunch rotors_gazebo bebop_hover2.launch
 
 $ rosrun rotors_gazebo image_publisher
+
+$ roslaunch rotors_gazebo landing.launch
 ```
 
 #### To get the data of calibration of camera

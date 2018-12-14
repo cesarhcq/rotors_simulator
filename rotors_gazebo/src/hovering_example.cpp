@@ -28,9 +28,13 @@
 #include <std_srvs/Empty.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
 
+const float DEG_2_RAD = 3.14159265359 / 180.0;
+
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "hovering_example");
+
+  ros::init(argc, argv, "hover_landing");
   ros::NodeHandle nh;
+
   // Create a private node handle for accessing node parameters.
   ros::NodeHandle nh_private("~");
   ros::Publisher trajectory_pub =
@@ -58,13 +62,13 @@ int main(int argc, char** argv) {
   }
 
   // Wait for 5 seconds to let the Gazebo GUI show up.
-  ros::Duration(3.0).sleep();
+  ros::Duration(5.0).sleep();
 
   trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
   trajectory_msg.header.stamp = ros::Time::now();
 
   // Default desired position and yaw.
-  Eigen::Vector3d desired_position(0.0, 0.0, 5.0);
+  Eigen::Vector3d desired_position(0.0, 0.0, 6.0);
   double desired_yaw = 0.0;
 
   // Overwrite defaults if set as node parameters.
@@ -82,22 +86,23 @@ int main(int argc, char** argv) {
 
   trajectory_pub.publish(trajectory_msg);
 
-  ros::Time begin = ros::Time::now();
-  while(ros::Time::now()-begin < ros::Duration(5.0)){
-    ROS_INFO("Esperando");
-  }
+  // Wait for 3.0 seconds to let
+  // ros::Time begin = ros::Time::now();
+  // while(ros::Time::now()-begin < ros::Duration(3.0)){
+  //   ROS_INFO("Esperando");
+  // }
 
 
   // Default desired position and yaw.
-  desired_position.x() = 2.0;
-  desired_yaw = -45*(3.14159265359/180);
+  // desired_position.x() = 0.0;
+  // desired_yaw = -0 * DEG_2_RAD;
 
-  mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
-      desired_position, desired_yaw, &trajectory_msg);
-  ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
-           nh.getNamespace().c_str(), desired_position.x(),
-           desired_position.y(), desired_position.z());
-  trajectory_pub.publish(trajectory_msg);
+  // mav_msgs::msgMultiDofJointTrajectoryFromPositionYaw(
+  //     desired_position, desired_yaw, &trajectory_msg);
+  // ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
+  //          nh.getNamespace().c_str(), desired_position.x(),
+  //          desired_position.y(), desired_position.z());
+  // trajectory_pub.publish(trajectory_msg);
 
   ros::spinOnce();
   ros::shutdown();
